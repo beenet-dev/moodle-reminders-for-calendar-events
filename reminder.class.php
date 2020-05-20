@@ -201,12 +201,12 @@ abstract class local_reminder {
         $htmltext = html_writer::start_tag('tr');
         $columndescstyle = array('style' => $this->descstyle, 'colspan' => 2);
         if (isemptystring($description)) {
-            $htmltext .= html_writer::tag('td', "<p>$event->name</p>", $columndescstyle);
+            $htmltext .= html_writer::tag('td', " <p>$event->name</p>", $columndescstyle);
         } else {
             if (substr($description, strlen('<p>')) == '<p>') {
-                $htmltext .= html_writer::tag('td', $description, $columndescstyle);
+                $htmltext .= html_writer::tag('td', ' '.str_replace("</p>", "</p> ", $description), $columndescstyle);
             } else {
-                $htmltext .= html_writer::tag('td', "<p>$description</p>", $columndescstyle);
+                $htmltext .= html_writer::tag('td', " <p>".str_replace("</p>", "</p> ", $description)."</p>", $columndescstyle);
             }
         }
         return $htmltext.html_writer::end_tag('tr');
@@ -372,10 +372,13 @@ abstract class local_reminder {
         if ($refreshcontent) {
             $contenthtml = $this->get_message_html($user);
             $titlehtml = $this->get_message_title();
+			$smallmsg = $this->get_message_plaintext($user);
+			$smallmsg = str_replace("</p>", "</p> ", $smallmsg);
+			$smallmsg = str_replace("\n", "\n ", $smallmsg);
 
             $this->eventobject->fullmessagehtml = $contenthtml;
-            $this->eventobject->smallmessage = $titlehtml . ' - ' . $contenthtml;
-            $this->eventobject->fullmessage = $this->get_message_plaintext($user);
+            $this->eventobject->smallmessage = $smallmsg;
+            $this->eventobject->fullmessage = $smallmsg;
         }
 
         return $this->eventobject;
@@ -421,7 +424,9 @@ abstract class local_reminder {
             $fromuser->customheaders = $cheaders;
         }
 
-         // BUG FIX: $eventdata must be a new \core\message\message() for Moodle 3.5+.
+        $smallmsg = $this->get_message_plaintext($touser, $changetype);
+		$smallmsg = str_replace("</p>", "</p> ", $smallmsg);
+		$smallmsg = str_replace("\n", "\n ", $smallmsg);
         $eventdata = new \core\message\message();
 
         $eventdata->component           = 'local_reminders';
@@ -429,10 +434,10 @@ abstract class local_reminder {
         $eventdata->userfrom            = $fromuser;
         $eventdata->userto              = $touser;
         $eventdata->subject             = '['.$subjectprefix.'] '.$titleprefixlangstr.': '.$titlehtml;
-        $eventdata->fullmessage         = $this->get_message_plaintext($touser, $changetype);
+        $eventdata->fullmessage         = $smallmsg;
         $eventdata->fullmessageformat   = FORMAT_PLAIN;
         $eventdata->fullmessagehtml     = $contenthtml;
-        $eventdata->smallmessage        = $titlehtml . ' - ' . $contenthtml;
+        $eventdata->smallmessage        = $smallmsg;
         $eventdata->notification        = $this->notification;
 
         return $eventdata;

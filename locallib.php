@@ -568,7 +568,7 @@ function format_event_time_duration($user, $event, $tzstyle=null, $includetz=tru
     } else {
         $tzstr = '<span style="font-size:13px;color: #888;">'.$tzstr.'</span>';
     }
-    return $formattedtime.' &nbsp;&nbsp;'.$tzstr;
+    return $formattedtime.' - '.$tzstr;
 }
 
 /**
