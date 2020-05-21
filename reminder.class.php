@@ -374,7 +374,7 @@ abstract class local_reminder {
             $titlehtml = $this->get_message_title();
 			$smallmsg = $this->get_message_plaintext($user);
 			$smallmsg = str_replace("</p>", "</p> ", $smallmsg);
-			$smallmsg = str_replace("\n", "\n ", $smallmsg);
+			$smallmsg = str_replace("\n", " ", $smallmsg);
 
             $this->eventobject->fullmessagehtml = $contenthtml;
             $this->eventobject->smallmessage = $smallmsg;
@@ -426,7 +426,7 @@ abstract class local_reminder {
 
         $smallmsg = $this->get_message_plaintext($touser, $changetype);
 		$smallmsg = str_replace("</p>", "</p> ", $smallmsg);
-		$smallmsg = str_replace("\n", "\n ", $smallmsg);
+		$smallmsg = str_replace("\n", " ", $smallmsg);
         $eventdata = new \core\message\message();
 
         $eventdata->component           = 'local_reminders';
