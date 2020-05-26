@@ -203,8 +203,9 @@ class group_reminder extends local_reminder {
             $text .= get_string('contenttypeactivity', 'local_reminders').': '.$this->cm->get_context_name()."\n";
         }
         $text .= get_string('contenttypegroup', 'local_reminders').': '.$this->group->name."\n";
-        $text .= get_string('contentdescription', 'local_reminders').': '.$this->event->description."\n";
-
+		if ($this->has_desc()) {
+			$text .= get_string('contentdescription', 'local_reminders').': '.$this->event->description."\n";
+		}
         return $text;
     }
 

@@ -194,7 +194,9 @@ class due_reminder extends course_reminder {
         $text .= get_string('contentwhen', 'local_reminders').': '.format_event_time_duration($user, $this->event)."\n";
         $text .= get_string('contenttypecourse', 'local_reminders').': '.$this->course->fullname."\n";
         $text .= get_string('contenttypeactivity', 'local_reminders').': '.$this->cm->get_context_name()."\n";
-        $text .= get_string('contentdescription', 'local_reminders').': '.$this->event->description."\n";
+		if ($this->has_desc()) {
+			$text .= get_string('contentdescription', 'local_reminders').': '.$this->event->description."\n";
+		}
 
         return $text;
     }
