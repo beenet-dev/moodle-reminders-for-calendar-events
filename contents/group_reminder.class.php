@@ -178,8 +178,6 @@ class group_reminder extends local_reminder {
 
         $description = isset($formattercls) ? $formattercls->get_description($this->activityobj, $this->event) : '';
         $htmlmail .= $this->write_description($description, $this->event);
-
-        $htmlmail .= $this->get_html_footer();
         $htmlmail .= html_writer::end_tag('table').html_writer::end_tag('div').html_writer::end_tag('body').
                 html_writer::end_tag('html');
 
@@ -194,19 +192,7 @@ class group_reminder extends local_reminder {
      * @return string Message content as plain-text.
      */
     public function get_message_plaintext($user=null, $changetype=null) {
-        $text  = $this->get_message_title().' ['.$this->aheaddays.' day(s) to go]'."\n";
-        $text .= get_string('contentwhen', 'local_reminders').': '.format_event_time_duration($user, $this->event)."\n";
-        if (!empty($this->course)) {
-            $text .= get_string('contenttypecourse', 'local_reminders').': '.$this->course->fullname."\n";
-        }
-        if (!empty($this->cm)) {
-            $text .= get_string('contenttypeactivity', 'local_reminders').': '.$this->cm->get_context_name()."\n";
-        }
-        $text .= get_string('contenttypegroup', 'local_reminders').': '.$this->group->name."\n";
-		if ($this->has_desc()) {
-			$text .= get_string('contentdescription', 'local_reminders').': '.$this->event->description."\n";
-		}
-        return $text;
+        return $this->get_message_title();
     }
 
     /**
@@ -227,7 +213,7 @@ class group_reminder extends local_reminder {
     public function get_message_title($type=null) {
         $title = '';
         if (!empty($this->course)) {
-            $title .= '('.$this->course->shortname;
+            $title .= '('.$this->course->fullname;
             if (!empty($this->cm)) {
                 $title .= '-'.get_string('modulename', $this->event->modulename);
             }

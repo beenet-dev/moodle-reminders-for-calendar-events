@@ -68,8 +68,6 @@ class site_reminder extends local_reminder {
 
         $description = $this->event->description;
         $htmlmail .= $this->write_description($description, $this->event);
-
-        $htmlmail .= $this->get_html_footer();
         $htmlmail .= html_writer::end_tag('table').html_writer::end_tag('div').html_writer::end_tag('body').
                 html_writer::end_tag('html');
 
@@ -84,12 +82,7 @@ class site_reminder extends local_reminder {
      * @return string Message content as plain-text.
      */
     public function get_message_plaintext($user=null, $changetype=null) {
-        $text  = $this->get_message_title().' ['.$this->aheaddays.' day(s) to go]'."\n";
-        $text .= get_string('contentwhen', 'local_reminders').': '.format_event_time_duration($user, $this->event)."\n";
-		if ($this->has_desc()) {
-			$text .= get_string('contentdescription', 'local_reminders').': '.$this->event->description."\n";
-		}
-        return $text;
+        return $this->get_message_title();
     }
 
     /**
