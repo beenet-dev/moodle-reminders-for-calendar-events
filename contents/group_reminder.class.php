@@ -176,8 +176,6 @@ class group_reminder extends local_reminder {
             }
         }
 
-        $description = isset($formattercls) ? $formattercls->get_description($this->activityobj, $this->event) : '';
-        $htmlmail .= $this->write_description($description, $this->event);
         $htmlmail .= html_writer::end_tag('table').html_writer::end_tag('div').html_writer::end_tag('body').
                 html_writer::end_tag('html');
 
@@ -192,7 +190,7 @@ class group_reminder extends local_reminder {
      * @return string Message content as plain-text.
      */
     public function get_message_plaintext($user=null, $changetype=null) {
-        $text  = $this->get_message_title()."\n";
+        $text  = $this->event->name."\n";
         $text .= get_string('contentwhen', 'local_reminders').': '.format_event_time_duration($user, $this->event)."\n";
         return $text;
     }
@@ -219,9 +217,8 @@ class group_reminder extends local_reminder {
             if (!empty($this->cm)) {
                 $title .= '-'.get_string('modulename', $this->event->modulename);
             }
-            $title .= ') ';
+            $title .= ')';
         }
-        $title .= $this->event->name;
         return $title;
     }
 

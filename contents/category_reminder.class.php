@@ -87,8 +87,6 @@ class category_reminder extends local_reminder {
 
         $htmlmail .= $this->write_table_row(get_string('contenttypecategory', 'local_reminders'), $this->coursecategory->name);
 
-        $description = $this->event->description;
-        $htmlmail .= $this->write_description($description, $this->event);
         return $htmlmail.html_writer::end_tag('table').
             html_writer::end_tag('div').
             html_writer::end_tag('body').
@@ -103,7 +101,7 @@ class category_reminder extends local_reminder {
      * @return string Message content as plain-text.
      */
     public function get_message_plaintext($user=null, $changetype=null) {
-        $text  = $this->get_message_title()."\n";
+        $text  = $this->event->name."\n";
         $text .= get_string('contentwhen', 'local_reminders').': '.format_event_time_duration($user, $this->event)."\n";
         return $text;
     }
@@ -124,7 +122,7 @@ class category_reminder extends local_reminder {
      * @return string Message title as a plain-text.
      */
     public function get_message_title($type=null) {
-        return '('.$this->coursecategory->name.') '.$this->event->name;
+        return '('.$this->coursecategory->name.')';
     }
 
     /**
