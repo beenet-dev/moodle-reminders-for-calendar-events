@@ -192,7 +192,9 @@ class group_reminder extends local_reminder {
      * @return string Message content as plain-text.
      */
     public function get_message_plaintext($user=null, $changetype=null) {
-        return $this->get_message_title();
+        $text  = $this->get_message_title()."\n";
+        $text .= get_string('contentwhen', 'local_reminders').': '.format_event_time_duration($user, $this->event)."\n";
+        return $text;
     }
 
     /**

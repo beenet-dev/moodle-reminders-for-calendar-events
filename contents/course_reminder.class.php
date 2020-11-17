@@ -87,6 +87,11 @@ class course_reminder extends local_reminder {
 
         $htmlmail .= $this->write_table_row(get_string('contenttypecourse', 'local_reminders'), $this->course->fullname);
 
+		if (!empty($this->cm)) {
+            $cmlink = html_writer::link($this->cm->get_url(), $this->cm->get_context_name());
+            $htmlmail .= $this->write_table_row(get_string('contenttypeactivity', 'local_reminders'), $cmlink, array('target' => '_blank'), false);
+        }
+
         $description = $this->event->description;
         $htmlmail .= $this->write_description($description, $this->event);
         return $htmlmail.html_writer::end_tag('table').
@@ -103,7 +108,9 @@ class course_reminder extends local_reminder {
      * @return string Message content as plain-text.
      */
     public function get_message_plaintext($user=null, $changetype=null) {
-        return $this->get_message_title();
+        $text  = $this->get_message_title()."\n";
+        $text .= get_string('contentwhen', 'local_reminders').': '.format_event_time_duration($user, $this->event)."\n";
+        return $text;
     }
 
     /**

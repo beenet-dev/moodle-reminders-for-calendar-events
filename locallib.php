@@ -519,7 +519,7 @@ function get_users_of_course($courseid, $courseroleids, &$arraytoappend) {
  * @param boolean $includetz whether to include timezone or not.
  * @return string formatted time string
  */
-function format_event_time_duration($user, $event, $tzstyle=null, $includetz=true) {
+function format_event_time_duration($user, $event, $tzstyle=null, $includetz=false) {
     $followedtimeformat = get_string('strftimedaydate', 'langconfig');
     $usertimeformat = get_correct_timeformat_user($user);
 
@@ -549,13 +549,13 @@ function format_event_time_duration($user, $event, $tzstyle=null, $includetz=tru
         }
 
         if ($addflag) {
-            $formattedtime = $formattedtimeprefix.'  ['.$formattedtime.']';
+			$formattedtime = $formattedtimeprefix;
         } else {
-            $formattedtime = $formattedtimeprefix.' '.$formattedtime;
+			$formattedtime = $formattedtimeprefix;
         }
 
     } else {
-        $formattedtime = $formattedtimeprefix.' '.$formattedtime;
+		$formattedtime = $formattedtimeprefix;
     }
 
     if (!$includetz) {

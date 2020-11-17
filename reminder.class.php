@@ -349,7 +349,7 @@ abstract class local_reminder {
         $eventdata->component           = 'local_reminders';
         $eventdata->name                = $this->get_message_provider();
         $eventdata->userfrom            = $admin;
-        $eventdata->subject             = $titlehtml;
+        $eventdata->subject             = '['.$subjectprefix.']'.$titlehtml;
         $eventdata->fullmessage         = $smallmsg;
         $eventdata->fullmessageformat   = FORMAT_PLAIN;
         $eventdata->fullmessagehtml     = $contenthtml;
@@ -384,7 +384,7 @@ abstract class local_reminder {
         if ($refreshcontent) {
             $contenthtml = $this->get_message_html($user);
 			$smallmsg = $this->parse_line($this->get_message_plaintext($user));
-			
+
             $this->eventobject->fullmessagehtml = $contenthtml;
             $this->eventobject->smallmessage = $smallmsg;
             $this->eventobject->fullmessage = $smallmsg;
