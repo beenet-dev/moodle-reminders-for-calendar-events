@@ -70,7 +70,7 @@ class course_reminder extends local_reminder {
         $htmlmail .= html_writer::start_tag('table',
                 array('cellspacing' => 0, 'cellpadding' => 8, 'style' => $this->tbodycssstyle));
 
-        $contenttitle = $this->get_message_title();
+        $contenttitle = '('.$this->course->fullname.') '.$this->event->name;
         if (!isemptystring($changetype)) {
             $contenttitle = "[$changetype]: $contenttitle";
         }
@@ -88,10 +88,15 @@ class course_reminder extends local_reminder {
         $htmlmail .= $this->write_table_row(get_string('contenttypecourse', 'local_reminders'), $this->course->fullname);
 
 		if (!empty($this->cm)) {
-            $cmlink = html_writer::link($this->cm->get_url(), $this->cm->get_context_name());
-            $htmlmail .= $this->write_table_row(get_string('contenttypeactivity', 'local_reminders'), $cmlink, array('target' => '_blank'), false);
+            $cmlink = $this->cm->get_context_name();
+			$cmlink = explode(": ", $cmlink, 2);
+            $htmlmail .= $this->write_table_row(get_string('contenttypeactivity', 'local_reminders'), $cmlink[1], array('target' => '_blank'), false);
         }
 
+		if ($this->has_desc()) {
+			$description = $this->event->description;
+			$htmlmail .= $this->write_description($description, $this->event);
+		}      
         return $htmlmail.html_writer::end_tag('table').
             html_writer::end_tag('div').
             html_writer::end_tag('body').
@@ -106,8 +111,8 @@ class course_reminder extends local_reminder {
      * @return string Message content as plain-text.
      */
     public function get_message_plaintext($user=null, $changetype=null) {
-        $text  = $this->event->name."\n";
-        $text .= get_string('contentwhen', 'local_reminders').': '.format_event_time_duration($user, $this->event)."\n";
+        //$text  = '('.$this->course->fullname.') '.$this->event->name.' '.get_string('contentwhen', 'local_reminders').': '.format_event_time_duration($user, $this->event);
+		$text  = $this->event->name.' '.get_string('contentwhen', 'local_reminders').': '.format_event_time_duration($user, $this->event);
         return $text;
     }
 
@@ -127,7 +132,8 @@ class course_reminder extends local_reminder {
      * @return string Message title as a plain-text.
      */
     public function get_message_title($type=null) {
-        return '('.$this->course->fullname.')';
+        return '('.$this->course->fullname.') ';
+		//return '('.$this->course->shortname.') ';
     }
 
     /**

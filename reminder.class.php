@@ -313,7 +313,7 @@ abstract class local_reminder {
 
 		$smallmsg = str_replace("</p>", "</p> ", $msg);
 		$smallmsg = strip_tags($smallmsg);
-		return ' '.str_replace("\n", " ", $smallmsg);
+		return str_replace("\n", " ", $smallmsg);
 	}
 
     /**

@@ -70,7 +70,12 @@ class site_reminder extends local_reminder {
 
         $activitylink = html_writer::link($this->cm->get_url(), $this->cm->get_context_name(), array('target' => '_blank'));
         $htmlmail .= $this->write_table_row(get_string('contenttypeactivity', 'local_reminders'), $activitylink);
-
+		
+		if ($this->has_desc()) {
+			$description = $this->event->description;
+			$htmlmail .= $this->write_description($description, $this->event);
+		}
+        
         $htmlmail .= html_writer::end_tag('table').html_writer::end_tag('div').html_writer::end_tag('body').
                 html_writer::end_tag('html');
 

@@ -135,7 +135,7 @@ class due_reminder extends course_reminder {
         $htmlmail .= html_writer::start_tag('table',
                 array('cellspacing' => 0, 'cellpadding' => 8, 'style' => $this->tbodycssstyle));
 
-        $contenttitle = $this->get_message_title();
+        $contenttitle = '('.$this->course->fullname.') '.$this->event->name;
         if (!isemptystring($changetype)) {
             $contenttitle = "[$changetype]: $contenttitle";
         }
@@ -160,8 +160,9 @@ class due_reminder extends course_reminder {
 
         $htmlmail .= $this->write_table_row(get_string('contenttypecourse', 'local_reminders'), $this->course->fullname);
 
-        $activitylink = html_writer::link($this->cm->get_url(), $this->cm->get_context_name(), array('target' => '_blank'));
-        $htmlmail .= $this->write_table_row(get_string('contenttypeactivity', 'local_reminders'), $activitylink);
+		$activitylink = $this->cm->get_context_name();
+		$activitylink = explode(": ", $activitylink, 2);
+        $htmlmail .= $this->write_table_row(get_string('contenttypeactivity', 'local_reminders'), $activitylink[1]);
 
         $formattercls = null;
         if (!empty($this->modname) && !empty($this->activityobj)) {
@@ -171,7 +172,13 @@ class due_reminder extends course_reminder {
                 $formattercls->append_info($htmlmail, $this->modname, $this->activityobj, $user, $this->event, $this);
             }
         }
-
+		
+		if ($this->has_desc()) {
+			//$description = isset($formattercls) ? $formattercls->get_description($this->activityobj, $this->event) : '';
+			$description = $this->event->description;
+			$htmlmail .= $this->write_description($description, $this->event);
+		}
+        
         return $htmlmail.html_writer::end_tag('table').
             html_writer::end_tag('div').
             html_writer::end_tag('body').
@@ -186,8 +193,8 @@ class due_reminder extends course_reminder {
      * @return string Message content as plain-text.
      */
     public function get_message_plaintext($user=null, $changetype=null) {
-        $text  = $this->event->name."\n";
-        $text .= get_string('contentwhen', 'local_reminders').': '.format_event_time_duration($user, $this->event)."\n";
+        $text  = $this->event->name.' '.get_string('contentwhen', 'local_reminders').': '.format_event_time_duration($user, $this->event);
+		//$text  = '('.$this->course->fullname.') '.$this->event->name.' '.get_string('contentwhen', 'local_reminders').': '.format_event_time_duration($user, $this->event);
         return $text;
     }
 
@@ -207,14 +214,8 @@ class due_reminder extends course_reminder {
      * @return string Message title as a plain-text.
      */
     public function get_message_title($type=null) {
-        global $CFG;
-
-        $title = '('.$this->course->fullname;
-        if (!empty($this->cm) &&
-            (!isset($CFG->local_reminders_showmodnameintitle) || $CFG->local_reminders_showmodnameintitle > 0)) {
-            $title .= '-'.get_string('modulename', $this->event->modulename);
-        }
-        return $title.')';
+        return '('.$this->course->fullname.') ';
+		//return '('.$this->course->shortname.') ';
     }
 
     /**

@@ -97,7 +97,11 @@ class user_reminder extends local_reminder {
         $htmlmail .= $this->write_location_info($this->event);
 
         $htmlmail .= $this->write_table_row(get_string('contenttypeuser', 'local_reminders'), fullname($this->user));
-
+		
+		if ($this->has_desc()) {
+			$description = $this->event->description;
+			$htmlmail .= $this->write_description($description, $this->event);
+		}
         $htmlmail .= html_writer::end_tag('table').html_writer::end_tag('div').html_writer::end_tag('body').
                 html_writer::end_tag('html');
 
@@ -112,7 +116,7 @@ class user_reminder extends local_reminder {
      * @return string Message content as plain-text.
      */
     public function get_message_plaintext($user=null, $changetype=null) {
-        $text  = $this->event->name."\n";
+        $text  = $this->get_message_title()."\n";
         $text .= get_string('contentwhen', 'local_reminders').': '.format_event_time_duration($user, $this->event)."\n";
         return $text;
     }
