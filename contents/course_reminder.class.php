@@ -105,8 +105,7 @@ class course_reminder extends local_reminder {
      * @return string Message content as plain-text.
      */
     public function get_message_plaintext($user=null, $changetype=null) {
-        //$text  = '('.$this->course->fullname.') '.$this->event->name.' '.get_string('contentwhen', 'local_reminders').': '.format_event_time_duration($user, $this->event);
-		$text  = $this->event->name.' '.get_string('contentwhen', 'local_reminders').': '.format_event_time_duration($user, $this->event);
+        $text  = $this->event->name.' '.get_string('contentwhen', 'local_reminders').': '.format_event_time_duration($user, $this->event);
         return $text;
     }
 
