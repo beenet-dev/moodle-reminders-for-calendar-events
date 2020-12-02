@@ -160,10 +160,6 @@ class due_reminder extends course_reminder {
 
         $htmlmail .= $this->write_table_row(get_string('contenttypecourse', 'local_reminders'), $this->course->fullname);
 
-		$activitylink = $this->cm->get_context_name();
-		$activitylink = explode(": ", $activitylink, 2);
-        $htmlmail .= $this->write_table_row(get_string('contenttypeactivity', 'local_reminders'), $activitylink[1]);
-
         $formattercls = null;
         if (!empty($this->modname) && !empty($this->activityobj)) {
             $clsname = 'local_reminder_'.$this->modname.'_handler';
@@ -194,8 +190,7 @@ class due_reminder extends course_reminder {
      */
     public function get_message_plaintext($user=null, $changetype=null) {
         $text  = $this->event->name.' '.get_string('contentwhen', 'local_reminders').': '.format_event_time_duration($user, $this->event);
-		//$text  = '('.$this->course->fullname.') '.$this->event->name.' '.get_string('contentwhen', 'local_reminders').': '.format_event_time_duration($user, $this->event);
-        return $text;
+		return $text;
     }
 
     /**
@@ -215,7 +210,6 @@ class due_reminder extends course_reminder {
      */
     public function get_message_title($type=null) {
         return '('.$this->course->fullname.') ';
-		//return '('.$this->course->shortname.') ';
     }
 
     /**
