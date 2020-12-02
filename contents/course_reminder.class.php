@@ -86,11 +86,7 @@ class course_reminder extends local_reminder {
         $htmlmail .= $this->write_location_info($this->event);
 
         $htmlmail .= $this->write_table_row(get_string('contenttypecourse', 'local_reminders'), $this->course->fullname);
-
-		if ($this->has_desc()) {
-			$description = $this->event->description;
-			$htmlmail .= $this->write_description($description, $this->event);
-		}      
+    
         return $htmlmail.html_writer::end_tag('table').
             html_writer::end_tag('div').
             html_writer::end_tag('body').

@@ -168,12 +168,7 @@ class due_reminder extends course_reminder {
                 $formattercls->append_info($htmlmail, $this->modname, $this->activityobj, $user, $this->event, $this);
             }
         }
-		
-		if ($this->has_desc()) {
-			//$description = isset($formattercls) ? $formattercls->get_description($this->activityobj, $this->event) : '';
-			$description = $this->event->description;
-			$htmlmail .= $this->write_description($description, $this->event);
-		}
+
         
         return $htmlmail.html_writer::end_tag('table').
             html_writer::end_tag('div').
